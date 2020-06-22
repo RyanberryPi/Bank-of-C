@@ -8,12 +8,12 @@ void aCreate();
 void logIn();
 void cScreen();
 
-struct ACCOUNTS {
+struct Accounts {
 	char _username[25];
 	char _password[25];
 	float _balance;
 	int _SSN;
-}acc[10] = {0};
+}a[10] = {0};
 
 //Main Menu: Create Account, Log In, Exit
 //User Menu: View Summary, Deposit, Withdraw, Log Out
@@ -58,15 +58,38 @@ void mMenu(){
 }
 
 void aCreate(){
-	
+	/*
+	cScreen();
 	char uName[25];
+	bool taken = false;
 
 	printf("Please enter a username: ");
-	
-	while(true){
-	
-		printf("Yeet");
+	scanf("%s",uName);
 
+	for(int i = 0; i < 10; i++){
+		if(uName == a[i]._username){
+			taken = true;
+		}
+	}
+
+	while(taken == true){
+		
+		taken = false;
+		printf("Username is already taken! Please try another: ");
+		scanf("%s",uName);
+
+		for(int i = 0; i < 10; i++){
+
+			if(uName == a[i]._username){
+				taken = true;
+			}
+		}
+	}
+*/
+	for(int i = 0; i < 10; i++){
+		if(a[i]._username == 0){
+			printf("Value is 0 here, boss");
+		}
 	}
 
 }
