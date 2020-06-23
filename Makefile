@@ -5,4 +5,8 @@ bank: bank.o
 	$(CC) bank.o -o $@
 
 bank.o: bank.c
-	$(CC) $(CFLAGS) bank.c -o $@
+	$(CC) $(CFLAGS) -c bank.c -o $@
+
+clean:
+	rm *.o
+	rm bank
