@@ -88,6 +88,7 @@ void aCreate(){
 	}
 
 	while(taken == true){
+		taken = false;
 		printf("Username is taken! Try a new one: ");
 		scanf("%s",uName);
 
@@ -97,16 +98,6 @@ void aCreate(){
 			if(strcmp(a[i].username,uName) == 0){
 				taken = true;
 				break;
-			}
-
-			else if(strcmp(a[i].username,uName) != 0){
-				taken = false;
-				break;
-			}
-
-			else{
-				printf("Error during username check. Returning to main menu.\n");
-				mMenu();
 			}
 		}
 	}
