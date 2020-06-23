@@ -78,8 +78,11 @@ void aCreate(){
 	printf("Please enter a username: ");
 	scanf("%s",uName);
 
+	cScreen();
+
 	for(i = 0; i < 10; i++){
-		if(uName == a[i].username){
+	//Make sure to use strcmp, you homo sapien
+		if(strcmp(a[i].username,uName) == 0){
 			taken = true;	
 		}
 	}
@@ -88,13 +91,15 @@ void aCreate(){
 		printf("Username is taken! Try a new one: ");
 		scanf("%s",uName);
 
+		cScreen();
+
 		for(i = 0; i < 10; i++){
-			if(uName == a[i].username){
+			if(strcmp(a[i].username,uName) == 0){
 				taken = true;
 				break;
 			}
 
-			else if(uName != a[i].username){
+			else if(strcmp(a[i].username,uName) != 0){
 				taken = false;
 				break;
 			}
