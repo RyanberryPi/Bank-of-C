@@ -9,7 +9,10 @@ void mMenu();
 void aCreate();
 void logIn();
 void cScreen();
-void printUsers();
+void uMenu(int);
+void uDep(int);
+void vBal(int);
+void uDraw(int);
 
 bool maxed = false;
 
@@ -18,18 +21,131 @@ struct Accounts {
 	char password[25];
 	float balance;
 	int uSSN;
-}a[] = {0};
+}a[10] = {0};
 
-int accs = sizeof(a)/sizeof(a[0]);
-
-//Main Menu: Create Account, Log In, Exit
 //User Menu: View Summary, Deposit, Withdraw, Log Out
 
 void cScreen(){
 	system("clear");
 }
 
+void vBal(int i){
+	cScreen();
+	printf("%s, your balance is: $%.2f.\n",a[i].username,a[i].balance);
+	printf("\n\n");
+	
+}
+
+void uDraw(int i){
+	
+	float amt;
+
+	cScreen();
+
+	printf("Enter how much money to withdraw: ");
+	scanf("%f",&amt);
+
+	while(a[i].balance - amt < 0){
+		printf("Not enough money to withdraw!\n");
+		printf("Enter a smaller amount to withdraw: ");
+		scanf("%f",&amt);
+	}
+
+	a[i].balance = a[i].balance - amt;
+}
+
+void uDep(int i){
+
+	float amt;
+
+	cScreen();
+	
+	printf("Enter how much money to deposit: ");
+	scanf("%f",&amt);
+
+	while(amt <= 0){
+		printf("There must be some money to deposit!\n");
+		printf("Please enter a different amount: ");
+		scanf("%f",&amt);
+	}
+
+	a[i].balance = a[i].balance + amt;
+
+}
+
+void uMenu(int i){
+	
+	cScreen();
+
+	int choice;
+
+	while(true){
+		printf("Welcome, %s!\n",a[i].username);
+		printf("\n");
+		printf("1. View Balance\n");
+		printf("2. Deposit\n");
+		printf("3. Withdraw\n");
+		printf("4. Log Out\n");
+		printf("\n");
+		printf("Option: ");
+		scanf("%d",&choice);
+
+		switch(choice){
+			
+			case 1:
+				vBal(i);
+				break;
+			
+			case 2:
+				uDep(i);
+				break;
+
+			case 3:
+				uDraw(i);
+				break;
+
+			case 4:
+				mMenu();
+				break;
+
+			default:
+				printf("Invalid choice");
+				break;
+
+		}
+
+	}
+}
+
+void logIn(){
+	
+	cScreen();
+	char user[MAX];
+	char pass[MAX];
+	int i;
+	
+	while(true){
+		printf("Username: ");
+		scanf("%s",user);
+		cScreen();
+		printf("Password: ");
+		scanf("%s",pass);
+		cScreen();
+		for(i = 0; i < 10; i++){
+			if(strcmp(a[i].username,user) == 0 && strcmp(a[i].password,pass) == 0){
+				uMenu(i);
+			}
+		}
+		cScreen();
+
+		printf("Credentials don't match any account!\n");
+		continue;
+	}
+}
+
 void mMenu(){
+
+	cScreen();
 
 	int choice;
 	
@@ -55,7 +171,7 @@ void mMenu(){
 				}
 		
 			case 2:
-				printUsers();
+				logIn();
 				break;
 
 			case 3:
@@ -71,19 +187,13 @@ void mMenu(){
 	}
 }
 
-void printUsers(){
-	for(int i = 0; i < accs; i++){
-		char bal[25];
-		printf("User %d: %s\n",i,a[i].username);
-		sprintf(bal, "%.2f", a[i].balance);
-		printf("User %d Balance: %s\n",i,bal);
-	}
-}
-
 void aCreate(){
 	
 	char uName[MAX];
+	char uPass[MAX];
+	char cPass[MAX];
 	int i;
+	int SSN;
 	bool taken = false;
 
 	printf("Please enter a username: ");
@@ -91,7 +201,7 @@ void aCreate(){
 
 	cScreen();
 
-	for(i = 0; i < accs; i++){
+	for(i = 0; i < 10; i++){
 	//Make sure to use strcmp, you homo sapien
 		if(strcmp(a[i].username,uName) == 0){
 			taken = true;	
@@ -105,7 +215,7 @@ void aCreate(){
 
 		cScreen();
 
-		for(i = 0; i < accs; i++){
+		for(i = 0; i < 10; i++){
 			if(strcmp(a[i].username,uName) == 0){
 				taken = true;
 				break;
@@ -113,9 +223,45 @@ void aCreate(){
 		}
 	}
 
-	for(i = 0; i < accs; i++){
+	for(i = 0; i < 10; i++){
 		if(a[i].username[0] == '\0'){
 			strcpy(a[i].username, uName);
+
+			while(true){
+
+				printf("Please enter a password at least 8 chars long: ");
+				scanf("%s",uPass);
+
+				while(strlen(uPass) < 8){
+					printf("Password must be at least 8 characters long.\n");
+					printf("Please enter a new password: ");
+					scanf("%s",uPass);
+				}
+
+				printf("Please confirm password: ");
+				scanf("%s",cPass);
+
+				if(strcmp(uPass,cPass) != 0){
+					continue;
+				}
+
+				strcpy(a[i].password,uPass);
+				break;
+			}
+
+			while(true){
+				printf("Please enter a valid SSN: ");
+				scanf("%d",&SSN);
+
+				while(SSN < 111111111 || SSN > 999999999){
+					printf("Not a valid SSN! Try a new one: ");
+					scanf("%d",&SSN);
+				}
+
+				a[i].uSSN = SSN;
+				break;
+			}
+
 			break;
 		}
 	}
