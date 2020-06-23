@@ -18,7 +18,9 @@ struct Accounts {
 	char password[25];
 	float balance;
 	int uSSN;
-}a[10] = {0};
+}a[] = {0};
+
+int accs = sizeof(a)/sizeof(a[0]);
 
 //Main Menu: Create Account, Log In, Exit
 //User Menu: View Summary, Deposit, Withdraw, Log Out
@@ -53,7 +55,7 @@ void mMenu(){
 				}
 		
 			case 2:
-				printf("Logged in!\n");
+				printUsers();
 				break;
 
 			case 3:
@@ -69,6 +71,15 @@ void mMenu(){
 	}
 }
 
+void printUsers(){
+	for(int i = 0; i < accs; i++){
+		char bal[25];
+		printf("User %d: %s\n",i,a[i].username);
+		sprintf(bal, "%.2f", a[i].balance);
+		printf("User %d Balance: %s\n",i,bal);
+	}
+}
+
 void aCreate(){
 	
 	char uName[MAX];
@@ -80,7 +91,7 @@ void aCreate(){
 
 	cScreen();
 
-	for(i = 0; i < 10; i++){
+	for(i = 0; i < accs; i++){
 	//Make sure to use strcmp, you homo sapien
 		if(strcmp(a[i].username,uName) == 0){
 			taken = true;	
@@ -94,11 +105,18 @@ void aCreate(){
 
 		cScreen();
 
-		for(i = 0; i < 10; i++){
+		for(i = 0; i < accs; i++){
 			if(strcmp(a[i].username,uName) == 0){
 				taken = true;
 				break;
 			}
+		}
+	}
+
+	for(i = 0; i < accs; i++){
+		if(a[i].username[0] == '\0'){
+			strcpy(a[i].username, uName);
+			break;
 		}
 	}
 }
