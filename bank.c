@@ -11,12 +11,11 @@ void logIn();
 void cScreen();
 void uMenu(int);
 void uDep(int);
-void vBal(int);
 void uDraw(int);
 
 bool maxed = false;
 
-struct Accounts {
+struct {
 	char username[25];
 	char password[25];
 	float balance;
@@ -27,13 +26,6 @@ struct Accounts {
 
 void cScreen(){
 	system("clear");
-}
-
-void vBal(int i){
-	cScreen();
-	printf("%s, your balance is: $%.2f.\n",a[i].username,a[i].balance);
-	printf("\n\n");
-	
 }
 
 void uDraw(int i){
@@ -80,9 +72,11 @@ void uMenu(int i){
 	int choice;
 
 	while(true){
+		cScreen();
 		printf("Welcome, %s!\n",a[i].username);
+		printf("Current Balance: $%.2f\n",a[i].balance);
 		printf("\n");
-		printf("1. View Balance\n");
+		printf("1. Update Balance\n");
 		printf("2. Deposit\n");
 		printf("3. Withdraw\n");
 		printf("4. Log Out\n");
@@ -93,7 +87,7 @@ void uMenu(int i){
 		switch(choice){
 			
 			case 1:
-				vBal(i);
+				uMenu(i);
 				break;
 			
 			case 2:
@@ -195,6 +189,7 @@ void aCreate(){
 	int i;
 	int SSN;
 	bool taken = false;
+	bool dup = false;
 
 	printf("Please enter a username: ");
 	scanf("%s",uName);
@@ -228,36 +223,54 @@ void aCreate(){
 			strcpy(a[i].username, uName);
 
 			while(true){
-
+				cScreen();
 				printf("Please enter a password at least 8 chars long: ");
 				scanf("%s",uPass);
-
+				cScreen();
 				while(strlen(uPass) < 8){
 					printf("Password must be at least 8 characters long.\n");
 					printf("Please enter a new password: ");
 					scanf("%s",uPass);
 				}
+				cScreen();
 
 				printf("Please confirm password: ");
 				scanf("%s",cPass);
-
+				cScreen();
 				if(strcmp(uPass,cPass) != 0){
 					continue;
 				}
-
+				cScreen();
 				strcpy(a[i].password,uPass);
 				break;
 			}
 
 			while(true){
+				cScreen();
 				printf("Please enter a valid SSN: ");
 				scanf("%d",&SSN);
-
+				cScreen();
 				while(SSN < 111111111 || SSN > 999999999){
+					cScreen();
 					printf("Not a valid SSN! Try a new one: ");
 					scanf("%d",&SSN);
 				}
 
+				for(int j = 0; j < 10; j++){
+					if(a[j].uSSN == SSN){
+						dup = true;
+						break;
+					}
+				}
+
+				while(dup == true){
+					cScreen();
+					printf("SSN already exists! Please correct your SSN entry: ");
+					scanf("%d",&SSN);
+					cScreen();
+				}
+
+				cScreen();
 				a[i].uSSN = SSN;
 				break;
 			}
